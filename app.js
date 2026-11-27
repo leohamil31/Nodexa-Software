@@ -358,10 +358,10 @@
   sizeSq(); addEventListener('resize', sizeSq); if (document.fonts) document.fonts.ready.then(sizeSq);
   const COLORS = ['#B794FF', '#7C4DFF', '#FFFFFF', '#E879F9'];
   const DEEP = ['#7C4DFF', '#5B2EE0', '#C026D3', '#9B6BFF'];
-  const burst = (x, y, n, spread, pal) => {
+  const burst = (x, y, n, spread, pal, small) => {
     if (reduce) return;
     for (let i = 0; i < n; i++) {
-      const p = document.createElement('span'); p.className = 'spark';
+      const p = document.createElement('span'); p.className = small ? 'spark sm' : 'spark';
       const ang = Math.random() * Math.PI * 2, dist = spread * (.4 + Math.random() * .8);
       p.style.left = x + 'px'; p.style.top = y + 'px';
       p.style.setProperty('--x', (Math.cos(ang) * dist).toFixed(0) + 'px');
@@ -375,9 +375,37 @@
   const lightBg = (el) => !!el.closest('#servicos, #como, #objetivo') && !matchMedia('(prefers-color-scheme: dark)').matches;
   document.querySelectorAll('.btn, .float, .copy').forEach((b) => {
     const pal = () => (lightBg(b) ? DEEP : COLORS);
-    if (matchMedia('(pointer: fine)').matches) b.addEventListener('pointermove', (e) => { const now = performance.now(); if (now - lastSpark > 40) { lastSpark = now; burst(e.clientX, e.clientY, 3, 44, pal()); } });
     b.addEventListener('pointerdown', (e) => burst(e.clientX, e.clientY, 28, 110, pal()));
   });
+
+  /* faíscas que acompanham o cursor pelo site inteiro */
+  if (!reduce && matchMedia('(pointer: fine)').matches) {
+    const glow = document.createElement('span'); glow.className = 'cur-glow'; glow.setAttribute('aria-hidden', 'true'); document.body.append(glow);
+    let mx = -100, my = -100, gx = -100, gy = -100, lastT = 0, lastX = 0, lastY = 0, live = 0, onLight = false;
+    const follow = () => {
+      gx += (mx - gx) * .22; gy += (my - gy) * .22;
+      glow.style.transform = 'translate(' + gx.toFixed(1) + 'px,' + gy.toFixed(1) + 'px)';
+      requestAnimationFrame(follow);
+    };
+    requestAnimationFrame(follow);
+    document.addEventListener('pointermove', (e) => {
+      mx = e.clientX; my = e.clientY; glow.classList.add('on');
+      const now = performance.now();
+      if (now - lastT < 28) return;
+      const moved = Math.hypot(mx - lastX, my - lastY);
+      lastT = now; lastX = mx; lastY = my;
+      if (moved < 4 || live > 70) return;
+      const el = document.elementFromPoint(mx, my);
+      const light = !!(el && lightBg(el));
+      if (light !== onLight) { onLight = light; glow.style.setProperty('--cg', light ? '#7C4DFF' : '#B794FF'); }
+      const overBtn = el && el.closest('.btn, .float, .copy');
+      const n = overBtn ? 3 : 1;
+      live += n; setTimeout(() => { live -= n; }, 1100);
+      burst(mx, my, n, overBtn ? 44 : 26, light ? DEEP : COLORS, !overBtn);
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => glow.classList.remove('on'));
+    document.addEventListener('pointerdown', () => { glow.style.boxShadow = '0 0 30px 10px ' + (onLight ? '#7C4DFF' : '#B794FF'); setTimeout(() => { glow.style.boxShadow = ''; }, 250); });
+  }
 
   /* brilho que segue o mouse nos cartões */
   document.querySelectorAll('.svc').forEach((card) => {
