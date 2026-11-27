@@ -242,6 +242,66 @@
   });
   document.querySelectorAll('.hero, .slats, .xbands').forEach((el) => pio.observe(el));
 
+  /* história contada pela rolagem */
+  const story = document.getElementById('historia');
+  const scene = document.getElementById('scene');
+  if (story && scene) {
+    const STEPS = 5;
+    let last = 0, sTick = false;
+    const fitDevice = () => {
+      if (innerWidth > 860) { scene.style.removeProperty('--dz'); return; }
+      const free = innerHeight - 84 - (scene.querySelector('.chs').offsetHeight) - 40;
+      scene.style.setProperty('--dz', Math.max(.42, Math.min(.8, free / 610)).toFixed(3));
+    };
+    const onStory = () => {
+      sTick = false;
+      const total = story.offsetHeight - innerHeight;
+      const p = Math.min(1, Math.max(0, -story.getBoundingClientRect().top / (total || 1)));
+      const step = Math.min(STEPS, Math.floor(p * STEPS) + 1);
+      scene.style.setProperty('--sp', p.toFixed(4));
+      if (step !== last) { last = step; scene.dataset.step = step; }
+    };
+    addEventListener('scroll', () => { if (!sTick) { sTick = true; requestAnimationFrame(onStory); } }, { passive: true });
+    new IntersectionObserver((en) => document.body.classList.toggle('in-story', en[0].isIntersecting), { rootMargin: '0px 0px -40% 0px' }).observe(story);
+    addEventListener('resize', () => { fitDevice(); onStory(); });
+    if (document.fonts) document.fonts.ready.then(fitDevice);
+    fitDevice(); onStory();
+
+    /* fundo de constelação */
+    const cv = document.getElementById('plexus');
+    const ctx = cv && cv.getContext ? cv.getContext('2d') : null;
+    if (ctx) {
+      let W, H, pts = [], running = false, raf;
+      const size = () => {
+        const dpr = Math.min(2, devicePixelRatio || 1);
+        W = cv.clientWidth; H = cv.clientHeight;
+        cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const n = W < 700 ? 34 : 70;
+        pts = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25 }));
+      };
+      const draw = () => {
+        ctx.clearRect(0, 0, W, H);
+        const R = W < 700 ? 110 : 150;
+        for (let i = 0; i < pts.length; i++) {
+          const a = pts[i];
+          if (running && !reduce) { a.x += a.vx; a.y += a.vy; if (a.x < 0 || a.x > W) a.vx *= -1; if (a.y < 0 || a.y > H) a.vy *= -1; }
+          for (let k = i + 1; k < pts.length; k++) {
+            const b = pts[k], d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < R) { ctx.strokeStyle = 'rgba(160,130,255,' + (0.22 * (1 - d / R)).toFixed(3) + ')'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+          }
+          ctx.fillStyle = 'rgba(200,180,255,.55)'; ctx.beginPath(); ctx.arc(a.x, a.y, 1.4, 0, 6.283); ctx.fill();
+        }
+        if (running && !reduce) raf = requestAnimationFrame(draw);
+      };
+      size(); draw();
+      addEventListener('resize', () => { size(); draw(); });
+      new IntersectionObserver((en) => {
+        running = en[0].isIntersecting;
+        cancelAnimationFrame(raf); if (running) draw();
+      }).observe(story);
+    }
+  }
+
   /* brilho que segue o mouse nos cartões */
   document.querySelectorAll('.svc').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
