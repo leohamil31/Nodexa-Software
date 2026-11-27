@@ -242,6 +242,31 @@
   });
   document.querySelectorAll('.hero, .slats, .xbands').forEach((el) => pio.observe(el));
 
+  /* botão de vidro 3D magnético */
+  const gb = document.getElementById('glassBtn');
+  if (gb && !reduce && matchMedia('(pointer: fine)').matches) {
+    const area = gb.closest('.hero') || document.body;
+    let raf = 0;
+    const reset = () => { gb.classList.remove('near'); ['--mx', '--my', '--rx', '--ry'].forEach((p) => gb.style.removeProperty(p)); };
+    area.addEventListener('pointermove', (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = gb.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const x = e.clientX - cx, y = e.clientY - cy;
+        if (Math.hypot(x / 1.6, y) > 110) { reset(); return; }
+        gb.classList.add('near');
+        gb.style.setProperty('--mx', Math.max(-12, Math.min(12, x * .14)).toFixed(1) + 'px');
+        gb.style.setProperty('--my', Math.max(-8, Math.min(8, y * .2)).toFixed(1) + 'px');
+        gb.style.setProperty('--ry', (x / r.width * 22).toFixed(1) + 'deg');
+        gb.style.setProperty('--rx', (-y / r.height * 18).toFixed(1) + 'deg');
+        gb.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+        gb.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+      });
+    });
+    area.addEventListener('pointerleave', reset);
+  }
+
   /* brilho que segue o mouse nos cartões */
   document.querySelectorAll('.svc').forEach((card) => {
     card.addEventListener('pointermove', (e) => {
