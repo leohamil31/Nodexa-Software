@@ -60,3 +60,6 @@ O site está no ar em **https://leohamil31.github.io/Nodexa-Software/** e atuali
 Para usar um domínio próprio no GitHub Pages: em *Settings → Pages → Custom domain* coloque o domínio, aponte o DNS no registro.br como o GitHub indicar e marque *Enforce HTTPS*.
 
 Observação: o GitHub Pages não lê o arquivo `_headers` (ele é da Netlify). Por isso as principais regras de segurança também estão dentro das páginas. Se um dia mudar para a Netlify, o `_headers` passa a valer sozinho.
+
+## Créditos
+Ícones do WhatsApp e do Instagram: Font Awesome Free (https://fontawesome.com), licença CC BY 4.0. As marcas pertencem aos seus donos e são usadas só para indicar os links de contato.
