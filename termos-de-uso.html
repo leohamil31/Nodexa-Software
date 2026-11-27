@@ -21,7 +21,7 @@
 <meta name="theme-color" content="#14111F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:light dark;--bg:light-dark(#FFFFFF,#100D19);--ink:light-dark(#14111F,#EEEAF8);--muted:light-dark(#4F4A63,#ADA8C2);--line:light-dark(rgb(20 17 31 / .11),rgb(255 255 255 / .09));--link:light-dark(#6D3FE8,#C4A8FF);--blue:#7C4DFF}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -31,9 +31,9 @@ a{color:var(--link)}
 a:focus-visible{outline:3px solid #B794FF;outline-offset:2px}
 .top{background:#14111F;color:#fff;padding:12px max(5vw,16px)}
 .top a{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;min-height:44px}
-.top b{font:700 21px/1 'Chakra Petch',system-ui,sans-serif}
+.top b{font:700 21px/1 Inter,system-ui,sans-serif}
 main{max-width:760px;margin:0 auto;padding:clamp(40px,7vw,80px) max(5vw,16px)}
-h1,h2{font-family:'Chakra Petch',system-ui,sans-serif;line-height:1.15;text-wrap:balance}
+h1,h2{font-family:Inter,system-ui,sans-serif;line-height:1.15;text-wrap:balance}
 h1{font-size:clamp(32px,5vw,44px);margin:0 0 8px}
 h2{font-size:22px;margin:40px 0 8px;padding-top:24px;border-top:1px solid var(--line)}
 p,li{color:var(--muted)}
@@ -49,7 +49,7 @@ ul{padding-left:20px}
 .stage::after{content:"";position:absolute;left:50%;bottom:-62vw;width:140vw;height:70vw;margin-left:-70vw;border-radius:50%;background:radial-gradient(closest-side,#0B0913 92%,transparent);box-shadow:0 -2px 0 oklch(85% .12 292),0 -10px 40px oklch(65% .24 290 / .9),0 -50px 140px oklch(55% .26 288 / .6);pointer-events:none}
 .stage .in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px;max-width:560px}
 .stage p{color:#C9C4DA;font-size:18px;margin:0}
-.big{font:700 clamp(96px,22vw,200px)/.9 'Chakra Petch',system-ui,sans-serif;letter-spacing:-.03em;background:linear-gradient(180deg in oklch,#fff 30%,oklch(72% .17 292));-webkit-background-clip:text;background-clip:text;color:transparent}
+.big{font:700 clamp(96px,22vw,200px)/.9 Inter,system-ui,sans-serif;letter-spacing:-.03em;background:linear-gradient(180deg in oklch,#fff 30%,oklch(72% .17 292));-webkit-background-clip:text;background-clip:text;color:transparent}
 .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px}
 .check{width:84px;height:84px;border-radius:50%;background:#16A34A;display:grid;place-items:center;box-shadow:0 0 0 10px rgb(22 163 74 / .15),0 0 50px rgb(22 163 74 / .5)}
 .check path{stroke-dasharray:1;stroke-dashoffset:0}

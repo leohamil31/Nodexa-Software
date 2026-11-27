@@ -259,6 +259,7 @@
       const p = Math.min(1, Math.max(0, -story.getBoundingClientRect().top / (total || 1)));
       const step = Math.min(STEPS, Math.floor(p * STEPS) + 1);
       scene.style.setProperty('--sp', p.toFixed(4));
+      scene.classList.toggle('done', p > 0.97);
       if (step !== last) { last = step; scene.dataset.step = step; }
     };
     addEventListener('scroll', () => { if (!sTick) { sTick = true; requestAnimationFrame(onStory); } }, { passive: true });
