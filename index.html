@@ -161,6 +161,14 @@ main:focus{outline:none}
 .btn.ghost{background:rgba(255,255,255,.04);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3)}
 .btn.ghost:hover{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px #fff;transform:translateY(-2px)}
 .btn.sm{min-height:44px;padding:0 18px;font-size:15px}
+@property --ba{syntax:'<angle>';initial-value:0deg;inherits:false}
+.btn.light{overflow:visible;background:#14102A;color:#fff}
+.btn.light::before{content:"";position:absolute;inset:-2px;z-index:-1;border-radius:14px;background:conic-gradient(from var(--ba),rgb(183 148 255 / .18) 0 68%,#B794FF 80%,#fff 87%,rgb(183 148 255 / .18) 96%);animation:borderspin 2.8s linear infinite}
+.btn.light::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:12px;background:#14102A}
+.btn.light:hover{transform:translateY(-2px)}
+.btn.light:hover::before{animation-duration:1.1s}
+@keyframes borderspin{to{--ba:360deg}}
+@media (prefers-reduced-motion:reduce){.btn.light::before{animation:none;background:rgb(183 148 255 / .5)}}
 .btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
 
 /* nav */
@@ -512,7 +520,7 @@ suporte.evoluir(sistema, { sempre: true });</pre>
       <p data-lines class="lead">Sistemas, aplicativos e automações para a sua empresa vender mais e trabalhar menos.</p>
       <div class="cta in" style="--d:2">
         <a class="btn pri" href="#contato">Solicitar orçamento<svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn ghost" href="#servicos">Ver serviços</a>
+        <a class="btn light" href="#servicos">Conhecer mais<svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
       <div class="tags in" style="--d:3" aria-label="Áreas de atuação">
         <span>Sistemas web</span><span>Apps iOS e Android</span><span>SaaS</span><span>Automação</span><span>Agentes de IA</span>
