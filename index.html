@@ -130,10 +130,6 @@ html.has-intro .hero .fig{animation-delay:1.8s}
 .skip:focus{top:12px}
 main:focus{outline:none}
 
-/* código revelado pelo mouse */
-.codebg{position:absolute;inset:0 0 0 52%;margin:0;padding:24px max(5vw,16px);font:500 15px/2 ui-monospace,'SFMono-Regular',Menlo,monospace;color:oklch(78% .14 292 / .35);white-space:pre;overflow:hidden;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s;
-  -webkit-mask-image:radial-gradient(circle 190px at var(--rx,-500px) var(--ry,-500px),#000 0%,rgb(0 0 0 / .5) 45%,transparent 100%);mask-image:radial-gradient(circle 190px at var(--rx,-500px) var(--ry,-500px),#000 0%,rgb(0 0 0 / .5) 45%,transparent 100%)}
-.hero.peek .codebg{opacity:1}
 
 /* faixas diagonais */
 .xbands{position:relative;z-index:3;height:130px;margin:-64px 0 -66px;pointer-events:none;overflow:hidden}
@@ -145,6 +141,42 @@ main:focus{outline:none}
 .xb i{font-style:normal;color:rgb(255 255 255 / .45)}
 .xb2 i{color:oklch(72% .17 292 / .7)}
 @media(max-width:600px){.xbands{height:104px;margin:-48px 0 -52px}.xb .track{font-size:17px;gap:16px}.xb{padding:11px 0}}
+
+
+/* terminal que aparece no topo */
+.nx-term{position:absolute;z-index:0;left:-6%;right:-4%;top:6%;border-radius:18px;background:rgb(12 9 24 / .78);border:1px solid rgb(183 148 255 / .22);box-shadow:inset 0 1px 0 rgb(255 255 255 / .08),0 30px 60px -30px rgb(0 0 0 / .8),0 0 60px -20px rgb(124 77 255 / .5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transform:perspective(900px) translateY(18px) rotateX(10deg) scale(.96);transform-origin:50% 0;transition:opacity .5s var(--ease),transform .7s var(--settle);pointer-events:none}
+.nx-term.on{opacity:1;transform:perspective(900px) translateY(0) rotateX(0) scale(1)}
+.nx-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid rgb(255 255 255 / .07);font:500 12px Inter,system-ui,sans-serif;color:#8F88A8}
+.nx-bar i{width:10px;height:10px;border-radius:50%;background:#3A3255}.nx-bar i:first-child{background:#F87171}.nx-bar i:nth-child(2){background:#FBBF24}.nx-bar i:nth-child(3){background:#4ADE80}
+.nx-bar span{margin-left:8px}
+.nx-code{margin:0;padding:14px 18px 18px;min-height:220px;font:500 14px/1.75 ui-monospace,'SFMono-Regular','JetBrains Mono',Menlo,Consolas,monospace;color:#D6D1E6;white-space:pre-wrap;word-break:break-word}
+.nx-code .tk-k{color:#C792EA}.nx-code .tk-f{color:#82AAFF}.nx-code .tk-s{color:#C3E88D}.nx-code .tk-c{color:#6F6889}.nx-code .tk-o{color:#4ADE80;font-weight:700}.nx-code .tk-v{color:#FFCB6B}
+.nx-caret{display:inline-block;width:8px;height:16px;margin-left:1px;vertical-align:-3px;background:#B794FF;animation:blink 1s steps(1) infinite}
+.fig.coding .halo{opacity:1;scale:1.15}
+.fig .tilt{transition:transform .5s var(--ease),translate .8s var(--settle),scale .8s var(--settle)}
+.fig.coding .tilt{translate:30% 24%;scale:.5}
+.fig .chip{transition:opacity .4s}
+.fig.coding .chip{opacity:0}
+.fig.coding .shadow{opacity:0}
+.fig .shadow{transition:opacity .4s}
+.fig .stage{translate:0 0 var(--lift,0px)}
+@media(max-width:760px){.nx-term{left:-2%;right:-2%;top:2%}.nx-code{font-size:12.5px;min-height:190px;padding:12px 14px 14px}}
+
+/* botões do topo: quadrado que cresce + link com sublinhado + faíscas */
+.btn.sq{padding:0 7px 0 24px;gap:16px;color:#fff;background:#1E1638;box-shadow:inset 0 0 0 1.5px rgb(124 77 255 / .65),0 14px 30px -16px rgb(124 77 255 / .8);overflow:hidden}
+.btn.sq .sq-t{position:relative;z-index:1}
+.btn.sq .sq-c{position:relative;width:38px;height:38px;display:grid;place-items:center}
+.btn.sq .sq-c::before{content:"";position:absolute;right:0;top:0;width:38px;height:38px;border-radius:10px;background:var(--blue);z-index:-1;transition:width .55s var(--ease),height .55s var(--ease),right .55s var(--ease),top .55s var(--ease),border-radius .55s var(--ease)}
+.btn.sq:hover .sq-c::before,.btn.sq:focus-visible .sq-c::before{width:var(--sqw,260px);height:48px;right:-7px;top:-5px;border-radius:12px}
+.btn.sq .sq-c svg{position:relative;z-index:1}
+.btn.sq:hover .go,.btn.sq:focus-visible .go{transform:rotate(-45deg)}
+.btn.lnk{padding:0 8px;background:none;color:#fff}
+.btn.lnk span{position:relative}
+.btn.lnk span::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--cyan);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.btn.lnk:hover span::after,.btn.lnk:focus-visible span::after{transform:scaleX(1);transform-origin:left}
+.btn.lnk:hover .go{transform:translateX(6px)}
+.spark{position:fixed;z-index:80;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;pointer-events:none;background:var(--c,#B794FF);box-shadow:0 0 10px var(--c,#B794FF);animation:spark var(--d,.8s) var(--ease) forwards}
+@keyframes spark{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
 
 /* botões */
 .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;
@@ -413,6 +445,15 @@ html.js .float:not(.show){opacity:0;transform:translateY(20px) scale(.9);pointer
 @media(max-width:600px){#porque .list{grid-template-columns:minmax(0,1fr)}.stat b{font-size:44px}}
 
 
+
+@media(max-width:760px){
+  html.js .reveal{filter:none;translate:0 20px}
+  [data-lines] .line-in{filter:none}
+  .svc:active,.list > div:active,details:active{transform:scale(.985)}
+  .svc,.list > div{transition:transform .35s var(--spring),border-color .3s,box-shadow .4s}
+  .chip{animation-duration:7s}
+  .xb .track{font-size:16px}
+}
 @media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}.step::before{right:0}.why,.contact .wrap{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:760px){.hero .wrap{grid-template-columns:minmax(0,1fr)}.fig{margin:0 auto;max-width:440px}
   html.js .menu-btn{display:grid}
@@ -474,57 +515,13 @@ html.js .float:not(.show){opacity:0;transform:translateY(20px) scale(.9);pointer
 </nav>
 
 <header class="hero band" id="inicio">
-  <pre class="codebg" aria-hidden="true">const nodexa = new Studio({ foco: &#x27;o seu negócio&#x27; });
-await nodexa.diagnostico(processos);
-const prototipo = design.criar({ telas, fluxo });
-if (tarefa.repetitiva) automacao.ativar(tarefa);
-agente_ia.run({ atender: &#x27;24h&#x27;, idioma: &#x27;pt-BR&#x27; });
-api.integrar([&#x27;ERP&#x27;, &#x27;e-commerce&#x27;, &#x27;pagamentos&#x27;]);
-deploy.publicar({ web: true, ios: true, android: true });
-suporte.evoluir(sistema, { sempre: true });
-// menos tarefa manual, mais resultado
-const nodexa = new Studio({ foco: &#x27;o seu negócio&#x27; });
-await nodexa.diagnostico(processos);
-const prototipo = design.criar({ telas, fluxo });
-if (tarefa.repetitiva) automacao.ativar(tarefa);
-agente_ia.run({ atender: &#x27;24h&#x27;, idioma: &#x27;pt-BR&#x27; });
-api.integrar([&#x27;ERP&#x27;, &#x27;e-commerce&#x27;, &#x27;pagamentos&#x27;]);
-deploy.publicar({ web: true, ios: true, android: true });
-suporte.evoluir(sistema, { sempre: true });
-// menos tarefa manual, mais resultado
-const nodexa = new Studio({ foco: &#x27;o seu negócio&#x27; });
-await nodexa.diagnostico(processos);
-const prototipo = design.criar({ telas, fluxo });
-if (tarefa.repetitiva) automacao.ativar(tarefa);
-agente_ia.run({ atender: &#x27;24h&#x27;, idioma: &#x27;pt-BR&#x27; });
-api.integrar([&#x27;ERP&#x27;, &#x27;e-commerce&#x27;, &#x27;pagamentos&#x27;]);
-deploy.publicar({ web: true, ios: true, android: true });
-suporte.evoluir(sistema, { sempre: true });
-// menos tarefa manual, mais resultado
-const nodexa = new Studio({ foco: &#x27;o seu negócio&#x27; });
-await nodexa.diagnostico(processos);
-const prototipo = design.criar({ telas, fluxo });
-if (tarefa.repetitiva) automacao.ativar(tarefa);
-agente_ia.run({ atender: &#x27;24h&#x27;, idioma: &#x27;pt-BR&#x27; });
-api.integrar([&#x27;ERP&#x27;, &#x27;e-commerce&#x27;, &#x27;pagamentos&#x27;]);
-deploy.publicar({ web: true, ios: true, android: true });
-suporte.evoluir(sistema, { sempre: true });
-// menos tarefa manual, mais resultado
-const nodexa = new Studio({ foco: &#x27;o seu negócio&#x27; });
-await nodexa.diagnostico(processos);
-const prototipo = design.criar({ telas, fluxo });
-if (tarefa.repetitiva) automacao.ativar(tarefa);
-agente_ia.run({ atender: &#x27;24h&#x27;, idioma: &#x27;pt-BR&#x27; });
-api.integrar([&#x27;ERP&#x27;, &#x27;e-commerce&#x27;, &#x27;pagamentos&#x27;]);
-deploy.publicar({ web: true, ios: true, android: true });
-suporte.evoluir(sistema, { sempre: true });</pre>
   <div class="wrap">
     <div>
       <h1 data-lines>Software sob medida com <em>IA</em></h1>
       <p data-lines class="lead">Sistemas, aplicativos e automações para a sua empresa vender mais e trabalhar menos.</p>
       <div class="cta in" style="--d:2">
-        <a class="btn pri" href="#contato">Solicitar orçamento<svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="btn vidro3d" id="glassBtn" href="#servicos">Conhecer mais<svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn sq fx" href="#contato"><span class="sq-t">Solicitar orçamento</span><span class="sq-c"><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+        <a class="btn lnk fx" href="#servicos"><span>Conhecer mais</span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
       <div class="tags in" style="--d:3" aria-label="Áreas de atuação">
         <span>Sistemas web</span><span>Apps iOS e Android</span><span>SaaS</span><span>Automação</span><span>Agentes de IA</span>
@@ -532,6 +529,10 @@ suporte.evoluir(sistema, { sempre: true });</pre>
     </div>
     <div class="fig" id="fig" aria-hidden="true">
       <div class="halo"></div>
+      <div class="nx-term" id="nxTerm">
+        <div class="nx-bar"><i></i><i></i><i></i><span>nodexa — projeto.js</span></div>
+        <pre class="nx-code" id="nxCode"></pre>
+      </div>
       <div class="shadow"></div>
       <div class="tilt" id="tilt">
         <div class="stage">

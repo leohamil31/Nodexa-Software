@@ -189,17 +189,71 @@
     });
   }
 
-  /* código revelado pelo mouse no topo */
+  /* terminal com código digitado no topo */
   const heroEl = document.getElementById('inicio');
-  const codebg = heroEl.querySelector('.codebg');
-  if (codebg && !reduce && matchMedia('(pointer: fine)').matches) {
-    heroEl.addEventListener('pointermove', (e) => {
-      const r = heroEl.getBoundingClientRect();
-      codebg.style.setProperty('--rx', (e.clientX - r.left) + 'px');
-      codebg.style.setProperty('--ry', (e.clientY - r.top) + 'px');
-      heroEl.classList.add('peek');
-    });
-    heroEl.addEventListener('pointerleave', () => heroEl.classList.remove('peek'));
+  const term = document.getElementById('nxTerm'), codeEl = document.getElementById('nxCode'), figEl = document.getElementById('fig');
+  if (term && codeEl) {
+    const LINES = [
+      [['c', '// nodexa — o seu projeto']],
+      [['k', 'const '], ['v', 'projeto'], ['p', ' = '], ['f', 'nodexa.criar'], ['p', '({']],
+      [['p', '  tipo: '], ['s', "'sistema sob medida'"], ['p', ',']],
+      [['p', '  ia: '], ['k', 'true'], ['p', ',']],
+      [['p', '  automacao: ['], ['s', "'pedidos'"], ['p', ', '], ['s', "'estoque'"], ['p', '],']],
+      [['p', '});']],
+      [['k', 'await '], ['v', 'projeto'], ['f', '.publicar'], ['p', '();']],
+      [['o', '✓ online em produção']],
+    ];
+    let timer = 0, running = false;
+    const build = (chars) => {
+      codeEl.textContent = '';
+      let left = chars;
+      for (const line of LINES) {
+        for (const [cls, txt] of line) {
+          if (left <= 0) break;
+          const part = txt.slice(0, left); left -= part.length;
+          const s = document.createElement('span'); if (cls !== 'p') s.className = 'tk-' + cls; s.textContent = part; codeEl.append(s);
+        }
+        if (left <= 0) break;
+        codeEl.append('\n'); left -= 1;
+      }
+      const caret = document.createElement('span'); caret.className = 'nx-caret'; codeEl.append(caret);
+    };
+    const total = LINES.reduce((n, l) => n + l.reduce((m, [, x]) => m + x.length, 0) + 1, 0);
+    const stop = () => { clearTimeout(timer); running = false; term.classList.remove('on'); figEl.classList.remove('coding'); };
+    const play = (loop) => {
+      if (running) return; running = true;
+      term.classList.add('on'); figEl.classList.add('coding');
+      if (reduce) { build(total); return; }
+      let n = 0;
+      const step = () => {
+        if (!running) return;
+        n += Math.random() < .15 ? 3 : 1; build(n);
+        if (n < total) timer = setTimeout(step, 16 + Math.random() * 30);
+        else if (loop) timer = setTimeout(() => { running = false; term.classList.remove('on'); figEl.classList.remove('coding'); timer = setTimeout(() => play(true), 1600); }, 3200);
+      };
+      build(0); timer = setTimeout(step, 350);
+    };
+    if (matchMedia('(pointer: fine)').matches) {
+      figEl.addEventListener('pointerenter', () => play(false));
+      heroEl.addEventListener('pointerleave', stop);
+      heroEl.addEventListener('pointermove', (e) => {
+        const r = figEl.getBoundingClientRect(), pad = 40;
+        const inside = e.clientX > r.left - pad && e.clientX < r.right + pad && e.clientY > r.top - pad && e.clientY < r.bottom + pad;
+        if (!inside && running) stop();
+      });
+    } else {
+      new IntersectionObserver((en) => { if (en[0].isIntersecting) play(true); else stop(); }, { threshold: .5 }).observe(figEl);
+    }
+  }
+
+  /* no celular, o logo 3D gira de leve com a rolagem */
+  if (!reduce && matchMedia('(pointer: coarse)').matches) {
+    const tiltEl = document.getElementById('tilt');
+    let tk = false;
+    addEventListener('scroll', () => {
+      if (tk) return; tk = true;
+      requestAnimationFrame(() => { tk = false; const k = Math.min(1, scrollY / innerHeight); tiltEl.style.setProperty('--ty', (k * 28).toFixed(1) + 'deg'); tiltEl.style.setProperty('--tx', (k * -10).toFixed(1) + 'deg'); });
+    }, { passive: true });
   }
 
   /* faixas diagonais andam com a rolagem */
@@ -266,6 +320,30 @@
     });
     area.addEventListener('pointerleave', reset);
   }
+
+  /* faíscas nos botões do topo */
+  const sqBtn = document.querySelector('.btn.sq');
+  const sizeSq = () => { if (sqBtn) sqBtn.style.setProperty('--sqw', (sqBtn.offsetWidth + 14) + 'px'); };
+  sizeSq(); addEventListener('resize', sizeSq); if (document.fonts) document.fonts.ready.then(sizeSq);
+  const COLORS = ['#B794FF', '#7C4DFF', '#FFFFFF', '#E879F9'];
+  const burst = (x, y, n, spread) => {
+    if (reduce) return;
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement('span'); p.className = 'spark';
+      const ang = Math.random() * Math.PI * 2, dist = spread * (.4 + Math.random() * .8);
+      p.style.left = x + 'px'; p.style.top = y + 'px';
+      p.style.setProperty('--x', (Math.cos(ang) * dist).toFixed(0) + 'px');
+      p.style.setProperty('--y', (Math.sin(ang) * dist).toFixed(0) + 'px');
+      p.style.setProperty('--c', COLORS[i % 4]);
+      p.style.setProperty('--d', (.5 + Math.random() * .6).toFixed(2) + 's');
+      document.body.append(p); setTimeout(() => p.remove(), 1200);
+    }
+  };
+  let lastSpark = 0;
+  document.querySelectorAll('.btn.fx').forEach((b) => {
+    if (matchMedia('(pointer: fine)').matches) b.addEventListener('pointermove', (e) => { const now = performance.now(); if (now - lastSpark > 45) { lastSpark = now; burst(e.clientX, e.clientY, 2, 38); } });
+    b.addEventListener('pointerdown', (e) => burst(e.clientX, e.clientY, 24, 100));
+  });
 
   /* brilho que segue o mouse nos cartões */
   document.querySelectorAll('.svc').forEach((card) => {
