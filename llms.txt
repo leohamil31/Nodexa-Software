@@ -1,0 +1,29 @@
+# Nodexa Software
+
+> Empresa brasileira de desenvolvimento de software. Cria sistemas sob medida, aplicativos iOS e Android, plataformas SaaS e automação de processos com inteligência artificial para empresas. Atende todo o Brasil de forma remota.
+
+## Serviços
+- Sistemas sob medida: ERPs, CRMs, painéis de gestão, controle de estoque, vendas e financeiro.
+- Aplicativos: apps para iOS e Android, para clientes e equipes, com publicação na App Store e no Google Play.
+- Plataformas SaaS: produtos digitais por assinatura, com planos, pagamentos, multiusuário e arquitetura em nuvem.
+- Automação de processos: fluxos entre sistemas, e-mail e WhatsApp; relatórios e alertas automáticos.
+- Gestão com IA: agentes e assistentes de atendimento; análise de dados e documentos.
+- Integrações e APIs: conexão entre ERP, e-commerce, pagamentos e ferramentas já usadas pela empresa.
+
+## Como trabalha
+1. Diagnóstico do negócio e dos processos.
+2. Proposta com escopo, prazo e investimento, mais um protótipo.
+3. Desenvolvimento em ciclos curtos, com versões para teste.
+4. Entrega, treinamento da equipe e suporte contínuo.
+
+## Diferenciais
+Projetos feitos sob medida, IA aplicada onde gera ganho real, comunicação direta com quem desenvolve, arquitetura em nuvem pronta para crescer, boas práticas de segurança e LGPD, e suporte depois da entrega.
+
+## Contato
+- Site: https://leohamil31.github.io/Nodexa-Software/
+- E-mail: contato@nodexa.com.br
+- Orçamentos: pelo formulário do site, que abre uma conversa no WhatsApp.
+
+## Páginas
+- [Início](https://leohamil31.github.io/Nodexa-Software/): serviços, processo, diferenciais, dúvidas frequentes e contato.
+- [Política de Privacidade](https://leohamil31.github.io/Nodexa-Software/politica-de-privacidade.html)

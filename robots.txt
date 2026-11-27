@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /obrigado.html
+
+Sitemap: https://leohamil31.github.io/Nodexa-Software/sitemap.xml
