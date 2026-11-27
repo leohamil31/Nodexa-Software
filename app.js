@@ -246,6 +246,37 @@
     }
   }
 
+  /* parede de código no fundo do topo, revelada pelo cursor */
+  const wall = heroEl.querySelector('.codewall');
+  if (wall) {
+    if (matchMedia('(pointer: fine)').matches) {
+      let wr = 0;
+      heroEl.addEventListener('pointermove', (e) => {
+        cancelAnimationFrame(wr);
+        wr = requestAnimationFrame(() => {
+          const r = heroEl.getBoundingClientRect();
+          wall.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+          wall.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+          heroEl.classList.add('lit');
+        });
+      });
+      heroEl.addEventListener('pointerleave', () => heroEl.classList.remove('lit'));
+    } else if (!reduce) {
+      let on = false, t0 = 0, raf2 = 0;
+      const roam = (now) => {
+        if (!on) return;
+        const t = (now - t0) / 1000, w = heroEl.clientWidth, h = heroEl.clientHeight;
+        wall.style.setProperty('--cx', (w * (.5 + .38 * Math.sin(t * .45))).toFixed(0) + 'px');
+        wall.style.setProperty('--cy', (h * (.5 + .32 * Math.sin(t * .31 + 1.2))).toFixed(0) + 'px');
+        raf2 = requestAnimationFrame(roam);
+      };
+      new IntersectionObserver((en) => {
+        on = en[0].isIntersecting; heroEl.classList.toggle('lit', on);
+        cancelAnimationFrame(raf2); if (on) { t0 = performance.now(); raf2 = requestAnimationFrame(roam); }
+      }).observe(heroEl);
+    }
+  }
+
   /* no celular, o logo 3D gira de leve com a rolagem */
   if (!reduce && matchMedia('(pointer: coarse)').matches) {
     const tiltEl = document.getElementById('tilt');
@@ -326,7 +357,8 @@
   const sizeSq = () => { if (sqBtn) sqBtn.style.setProperty('--sqw', (sqBtn.offsetWidth + 14) + 'px'); };
   sizeSq(); addEventListener('resize', sizeSq); if (document.fonts) document.fonts.ready.then(sizeSq);
   const COLORS = ['#B794FF', '#7C4DFF', '#FFFFFF', '#E879F9'];
-  const burst = (x, y, n, spread) => {
+  const DEEP = ['#7C4DFF', '#5B2EE0', '#C026D3', '#9B6BFF'];
+  const burst = (x, y, n, spread, pal) => {
     if (reduce) return;
     for (let i = 0; i < n; i++) {
       const p = document.createElement('span'); p.className = 'spark';
@@ -334,15 +366,17 @@
       p.style.left = x + 'px'; p.style.top = y + 'px';
       p.style.setProperty('--x', (Math.cos(ang) * dist).toFixed(0) + 'px');
       p.style.setProperty('--y', (Math.sin(ang) * dist).toFixed(0) + 'px');
-      p.style.setProperty('--c', COLORS[i % 4]);
+      p.style.setProperty('--c', (pal || COLORS)[i % 4]);
       p.style.setProperty('--d', (.5 + Math.random() * .6).toFixed(2) + 's');
       document.body.append(p); setTimeout(() => p.remove(), 1200);
     }
   };
   let lastSpark = 0;
-  document.querySelectorAll('.btn.fx').forEach((b) => {
-    if (matchMedia('(pointer: fine)').matches) b.addEventListener('pointermove', (e) => { const now = performance.now(); if (now - lastSpark > 45) { lastSpark = now; burst(e.clientX, e.clientY, 2, 38); } });
-    b.addEventListener('pointerdown', (e) => burst(e.clientX, e.clientY, 24, 100));
+  const lightBg = (el) => !!el.closest('#servicos, #como, #objetivo') && !matchMedia('(prefers-color-scheme: dark)').matches;
+  document.querySelectorAll('.btn, .float, .copy').forEach((b) => {
+    const pal = () => (lightBg(b) ? DEEP : COLORS);
+    if (matchMedia('(pointer: fine)').matches) b.addEventListener('pointermove', (e) => { const now = performance.now(); if (now - lastSpark > 40) { lastSpark = now; burst(e.clientX, e.clientY, 3, 44, pal()); } });
+    b.addEventListener('pointerdown', (e) => burst(e.clientX, e.clientY, 28, 110, pal()));
   });
 
   /* brilho que segue o mouse nos cartões */
