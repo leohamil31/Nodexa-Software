@@ -356,8 +356,8 @@
   const sqBtn = document.querySelector('.btn.sq');
   const sizeSq = () => { if (sqBtn) sqBtn.style.setProperty('--sqw', (sqBtn.offsetWidth + 14) + 'px'); };
   sizeSq(); addEventListener('resize', sizeSq); if (document.fonts) document.fonts.ready.then(sizeSq);
-  const COLORS = ['#B794FF', '#7C4DFF', '#FFFFFF', '#E879F9'];
-  const DEEP = ['#7C4DFF', '#5B2EE0', '#C026D3', '#9B6BFF'];
+  const COLORS = ['#B794FF', '#A3E635', '#FFFFFF', '#7C4DFF'];
+  const DEEP = ['#7C4DFF', '#5B2EE0', '#65A30D', '#9B6BFF'];
   const burst = (x, y, n, spread, pal, small) => {
     if (reduce) return;
     for (let i = 0; i < n; i++) {
